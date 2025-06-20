@@ -7,7 +7,7 @@ let io;
 function initializeSocket(server) {
   io = socketIo(server, {
     cors: {
-      origin: `${process.env.SERVER_URL}`,
+      origin: process.env.SERVER_URL,
       methods: ["GET", "POST"],
     },
   });

@@ -11,6 +11,7 @@ import { DriverDataContext } from "../../context/DriverContext";
 import axios from "axios";
 import Title from "@/components/Title";
 import { LogOut } from "lucide-react";
+import Header from "@/components/Header";
 
 interface Ride {
   _id: string;
@@ -32,16 +33,16 @@ const DriverHome = () => {
   console.log("Socket :", socket);
 
   // Show loading state if driver data isn't available yet
-  // if (!driver || !socket) {
-  //   return (
-  //     <div className="h-screen flex items-center justify-center">
-  //       <div className="text-center">
-  //         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-  //         <p>Connecting to driver services...</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!driver || !socket) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p>Connecting to driver services...</p>
+        </div>
+      </div>
+    );
+  }
 
   console.log(error);
 
@@ -160,30 +161,9 @@ const DriverHome = () => {
     };
   }, [socket]);
 
-  if (loading) {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p>Connecting to driver services...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="h-screen">
-      <div className="fixed top-0 right-0 flex items-center justify-between w-full px-4">
-        <div className="my-4">
-          <Title />
-        </div>
-        <Link
-          to="/driver-home"
-          className=" h-8 w-8 bg-yellow-400 flex items-center justify-center rounded-full"
-        >
-          <LogOut size={14} className="text-black" />
-        </Link>
-      </div>
+      <Header link="/driver/logout" />
       <div className="h-3/5">
         <img
           className="h-full w-full object-cover"

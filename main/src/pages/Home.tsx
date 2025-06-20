@@ -16,7 +16,7 @@ import LiveTracking from "../components/LiveTracking";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import Title from "@/components/Title";
+import Header from "@/components/Header";
 
 export interface User {
   _id: string;
@@ -230,121 +230,123 @@ const Home = () => {
   }
 
   return (
-    <div className="h-screen relative overflow-hidden">
-      <Title />
-      <div className="h-screen w-screen">
-        {/* image for temporary use  */}
-        <LiveTracking />
-      </div>
-      <div className=" flex flex-col justify-end h-screen absolute top-0 w-full">
-        <div className="h-[30%] p-6 bg-white relative">
-          <h5
-            ref={panelCloseRef}
-            onClick={() => {
-              setPanelOpen(false);
-            }}
-            className="absolute opacity-0 right-6 top-6 text-2xl"
-          >
-            <ChevronDown />
-          </h5>
-          <h4 className="text-2xl font-semibold">Find a trip</h4>
-          <form
-            className="relative py-3"
-            onSubmit={(e) => {
-              submitHandler(e);
-            }}
-          >
-            <div className="line absolute h-16 w-1 top-[50%] -translate-y-1/2 left-5 bg-gray-700 rounded-full"></div>
-            <Input
-              onClick={() => {
-                setPanelOpen(true);
-                setActiveField("pickup");
-              }}
-              value={pickup}
-              onChange={handlePickupChange}
-              className="px-12"
-              type="text"
-              placeholder="Add a pick-up location"
-            />
-            <Input
-              onClick={() => {
-                setPanelOpen(true);
-                setActiveField("destination");
-              }}
-              value={destination}
-              onChange={handleDestinationChange}
-              className=" px-12 mt-3"
-              type="text"
-              placeholder="Enter your destination"
-            />
-          </form>
-          <Button onClick={findTrip} className="">
-            Find Trip
-          </Button>
+    <div className="">
+      <Header link="/user/logout" />
+      <div className="h-screen relative overflow-hidden">
+        <div className="h-screen w-screen">
+          {/* image for temporary use  */}
+          <LiveTracking />
         </div>
-        <div ref={panelRef} className="bg-white h-0">
-          <LocationSearch
-            suggestions={
-              activeField === "pickup"
-                ? pickupSuggestions
-                : destinationSuggestions
-            }
-            setPanelOpen={setPanelOpen}
+        <div className=" flex flex-col justify-end h-screen absolute top-0 w-full">
+          <div className="h-[30%] p-6 bg-white relative">
+            <h5
+              ref={panelCloseRef}
+              onClick={() => {
+                setPanelOpen(false);
+              }}
+              className="absolute opacity-0 right-6 top-6 text-2xl"
+            >
+              <ChevronDown />
+            </h5>
+            <h4 className="text-2xl font-semibold">Find a trip</h4>
+            <form
+              className="relative py-3"
+              onSubmit={(e) => {
+                submitHandler(e);
+              }}
+            >
+              <div className="line absolute h-16 w-1 top-[50%] -translate-y-1/2 left-5 bg-gray-700 rounded-full"></div>
+              <Input
+                onClick={() => {
+                  setPanelOpen(true);
+                  setActiveField("pickup");
+                }}
+                value={pickup}
+                onChange={handlePickupChange}
+                className="px-12"
+                type="text"
+                placeholder="Add a pick-up location"
+              />
+              <Input
+                onClick={() => {
+                  setPanelOpen(true);
+                  setActiveField("destination");
+                }}
+                value={destination}
+                onChange={handleDestinationChange}
+                className=" px-12 mt-3"
+                type="text"
+                placeholder="Enter your destination"
+              />
+            </form>
+            <Button onClick={findTrip} className="">
+              Find Trip
+            </Button>
+          </div>
+          <div ref={panelRef} className="bg-white h-0">
+            <LocationSearch
+              suggestions={
+                activeField === "pickup"
+                  ? pickupSuggestions
+                  : destinationSuggestions
+              }
+              setPanelOpen={setPanelOpen}
+              setVehiclePanel={setVehiclePanel}
+              setPickup={setPickup}
+              setDestination={setDestination}
+              activeField={activeField}
+            />
+          </div>
+        </div>
+        <div
+          ref={vehiclePanelRef}
+          className="fixed w-full z-10 bottom-0 translate-y-full right-0 bg-white px-3 py-10 pt-12"
+        >
+          <VehiclePanel
+            selectVehicle={setVehicleType}
+            fare={fare}
+            setConfirmRidePanel={setConfirmRidePanel}
             setVehiclePanel={setVehiclePanel}
-            setPickup={setPickup}
-            setDestination={setDestination}
-            activeField={activeField}
           />
         </div>
-      </div>
-      <div
-        ref={vehiclePanelRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full right-0 bg-white px-3 py-10 pt-12"
-      >
-        <VehiclePanel
-          selectVehicle={setVehicleType}
-          fare={fare}
-          setConfirmRidePanel={setConfirmRidePanel}
-          setVehiclePanel={setVehiclePanel}
-        />
-      </div>
-      <div
-        ref={confirmRidePanelRef}
-        className="fixed w-full z-10 bottom-0 right-0 translate-y-full bg-white px-3 py-12 pt-12"
-      >
-        <ConfirmRide
-          createRide={createRide}
-          pickup={pickup}
-          destination={destination}
-          fare={fare}
-          vehicleType={vehicleType}
-          setConfirmRidePanel={setConfirmRidePanel}
-          setVehicleFound={setVehicleFound}
-        />
-      </div>
-      <div
-        ref={vehicleFoundRef}
-        className="fixed w-full z-10 bottom-0 right-0  translate-y-full bg-white px-3 py-12 pt-12"
-      >
-        <LookingForDriver
-          createRide={createRide}
-          pickup={pickup}
-          destination={destination}
-          fare={fare}
-          vehicleType={vehicleType}
-          setVehicleFound={setVehicleFound}
-        />
-      </div>
-      <div
-        ref={waitingForDriverRef}
-        className="fixed w-full  z-10 bottom-0 right-0  bg-white px-3 py-6 pt-12"
-      >
-        <WaitingForDriver
-          ride={ride}
-          setVehicleFound={setVehicleFound}
-          setWaitingForDriver={setWaitingForDriver}
-          waitingForDriver={waitingForDriver}
-        />
+        <div
+          ref={confirmRidePanelRef}
+          className="fixed w-full z-10 bottom-0 right-0 translate-y-full bg-white px-3 py-12 pt-12"
+        >
+          <ConfirmRide
+            createRide={createRide}
+            pickup={pickup}
+            destination={destination}
+            fare={fare}
+            vehicleType={vehicleType}
+            setConfirmRidePanel={setConfirmRidePanel}
+            setVehicleFound={setVehicleFound}
+          />
+        </div>
+        <div
+          ref={vehicleFoundRef}
+          className="fixed w-full z-10 bottom-0 right-0  translate-y-full bg-white px-3 py-12 pt-12"
+        >
+          <LookingForDriver
+            createRide={createRide}
+            pickup={pickup}
+            destination={destination}
+            fare={fare}
+            vehicleType={vehicleType}
+            setVehicleFound={setVehicleFound}
+          />
+        </div>
+        <div
+          ref={waitingForDriverRef}
+          className="fixed w-full  z-10 bottom-0 right-0  bg-white px-3 py-6 pt-12"
+        >
+          <WaitingForDriver
+            ride={ride}
+            setVehicleFound={setVehicleFound}
+            setWaitingForDriver={setWaitingForDriver}
+            waitingForDriver={waitingForDriver}
+          />
+        </div>
       </div>
     </div>
   );
