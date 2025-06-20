@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { Link } from "react-router";
 import DriverDetails from "../../components/DriverDetails";
 import RidePopUp from "../../components/RidePopUp";
 import { useGSAP } from "@gsap/react";
@@ -9,8 +8,6 @@ import { useEffect, useContext } from "react";
 import { SocketContext } from "../../context/SocketContext";
 import { DriverDataContext } from "../../context/DriverContext";
 import axios from "axios";
-import Title from "@/components/Title";
-import { LogOut } from "lucide-react";
 import Header from "@/components/Header";
 
 interface Ride {
@@ -45,6 +42,7 @@ const DriverHome = () => {
   }
 
   console.log(error);
+  console.log(loading);
 
   // Confirm ride function
   const confirmRide = async () => {
